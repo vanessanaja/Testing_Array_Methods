@@ -1,0 +1,94 @@
+<script src="../simpletest.js"></script>
+<script>
+    
+    // Function signature:
+    // function find(array, callback[, optionalThisObject]); {
+    //     var findCallback = callback;
+    // if(optionalThisObject) {
+    //     findCallback = callback.bind(optionalThisObject);
+    // }
+    // for(var i = 0; i < array.length; i++) {
+    //     findCallback(array[i], i, array);
+    //     }
+    // }
+
+    //  1. It should run the callback function array.length times.
+    //  2. It should return the first value in the array that satisfies the provided testing function in the callback.
+    //  3. It should return undefined if no value satisifies the callback.
+    //  4. It should pass in the ith element as the first argument to the callback.
+    //  5. It should pass in ith position as the second argument to the callback.
+    //  6. It should pass in the original array as the third argument to the callback.
+    //  7. It should accept an optional this object.
+
+    function find(array, callback, optionalThisObject) {
+        var findCallback = callback;
+        if (optionalThisObject) {
+            findCallback = callback.bind(optionalThisObject);
+        }
+        for (var i = 0; i < array.length; i++) {
+            findCallback(array[i], i, array);
+        }
+    }
+
+    tests({
+
+        'It should run the callback function array.length times.': function () {
+            var counter = 0;
+            find([1, 2, 3], function () {
+                counter++;
+            });
+            eq(counter, 3);
+        },
+        'It should pass in the ith element as the first argument to the callback.': function () {
+            find([1], function (number) {
+                eq(number, 1);
+            });
+        },
+        'It should pass in ith position as the second argument to the callback.': function () {
+            find([1], function (number, index) {
+                eq(index, 0);
+            });
+        },
+        'It should pass in the original array as the third argument to the callback.': function () {
+            var testArray = [1, 2, 3];
+            find(testArray, function (number, index, array) {
+                eq(array, testArray);
+            });
+        },
+        'It should accept an optional this object.': function () {
+            find([1, 2], function () {
+                eq(this.description, 'I am an optional this object')
+            }, {
+                description: 'I am an optional this object'
+            });
+        },
+        'It should return the first value in the array that satisfies the provided testing function in the callback.': function () {
+            var testArray = [1, 2, 3];
+            find(testArray, function (number, index, array) {
+                for (var i = 0; i < array.length; i++) {
+                    if (array[i] === 2) {
+                        return array[i];
+                    }
+                }
+                eq(array[i], 2);
+            });
+
+        },
+        'It should return undefined if no value satisifies the callback.': function () {
+            var testArray = [1, 2, 3];
+            find(testArray, function (number, index, array) {
+                for (var i = 0; i < array.length; i++) {
+                    if (array[i] === 4) {
+                        return array[i];
+                    }
+                }
+                eq(array[i], undefined);
+            });
+
+
+        }
+
+    });
+
+    // test
+</script>
