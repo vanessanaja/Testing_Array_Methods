@@ -16,7 +16,11 @@
 // It should return -1 if no element passed the test.
 // It should run the callback on empty indexes.
 
-function findIndex(array, callback) {
+function findIndex(array, callback, optionalThisObject) {
+    var findIndexCallback = callback;
+    if(optionalThisObject) {
+        findIndexCallback = callback.bind(optionalThisObject);
+    }
     for(var i = 0; i < array.length; i++) {
         callback(array[i], i, array);
     }
@@ -48,7 +52,10 @@ tests({
     });
 },
 'It should accept an optional this object. ': function() {
-    fail();
+    find([1, 2], function() {
+        eq(this.description, 'I should be accessible inside the callback')
+    }, {description: 'I should be accessible inside the callback'});
+    
 },
 'It should return the index of the first element in the array that satisfies the testing function.': function() {
     fail();
