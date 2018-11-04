@@ -1,15 +1,15 @@
 <script src="../simpletest.js"></script>
 <script>
     // function signature:
-    // findIndex(array, callback(element[, index[, array]])[, thisArg])
+    // findIndex(array, callback(element[, index[, array]])[, thisArg]);
 
 
     // Requirements:
 
-    // It should run the callback array.length times.
-    // It should pass the in ith element as the first argument to the callback. 
-    // It should pass in ith position as the second argument to the callback. 
-    // It should pass in the original array as the third argument to the callback. 
+    // It should run callback array.length times.
+    // It should pass ith element as the first argument to the callback. 
+    // It should pass ith position as the second argument to the callback. 
+    // It should pass original array as the third argument to the callback. 
     // It should accept an optional this object. 
     // It should return the index of the first element in the array that satisfies the testing function.
     // It should return -1 if no element passed the test.
@@ -21,10 +21,12 @@
             findIndexCallback = callback.bind(optionalThisObject);
         }
         for (var i = 0; i < array.length; i++) {
-            callback(array[i], i, array);
-
+            if (callback(array[i], i, array)) {
+                return i;
+            }
         }
-    };
+        return -1;
+    }
 
     tests({
 
@@ -61,7 +63,7 @@
         },
         'It should return the index of the first element in the array that satisfies the testing function.': function () {
             var testArray = [1, 2, 3, 4];
-            var result = findIndex(testArray, function(number, index, array) {
+            var result = findIndex(testArray, function (number, index, array) {
                 for (var i = 0; i < array.length; i++) {
                     if (array[i] > 2) {
                         return i;
@@ -71,10 +73,25 @@
             });
         },
         'It should return -1 if no element passed the test.': function () {
-            fail();
+            var testArray = [1, 2];
+            var result = findIndex(testArray, function (number, index, array) {
+                for (var i = 0; i < array.length; i++) {
+                    if (array[i] === 3) {
+                        return i;
+                    } else {
+                        return -1
+                    }
+                }
+                eq(result, -1);
+            });
         },
         'It should run the callback on empty indexes.': function () {
-            fail();
+            var testArray = [1, , 3, , ];
+            var counter = 0;
+            findIndex(testArray, function () {
+                counter++;
+            })
+            eq(counter, 4);
         }
 
     });
