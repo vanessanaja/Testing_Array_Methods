@@ -1,73 +1,81 @@
 <script src="../simpletest.js"></script>
 <script>
+    // function signature:
+    // findIndex(array, callback(element[, index[, array]])[, thisArg])
 
-// function signature:
-// findIndex(array, callback(element[, index[, array]])[, thisArg])
 
+    // Requirements:
 
-// Requirements:
+    // It should run the callback array.length times.
+    // It should pass the in ith element as the first argument to the callback. 
+    // It should pass in ith position as the second argument to the callback. 
+    // It should pass in the original array as the third argument to the callback. 
+    // It should accept an optional this object. 
+    // It should return the index of the first element in the array that satisfies the testing function.
+    // It should return -1 if no element passed the test.
+    // It should run the callback on empty indexes.
 
-// It should run the callback array.length times.
-// It should pass the in ith element as the first argument to the callback. 
-// It should pass in ith position as the second argument to the callback. 
-// It should pass in the original array as the third argument to the callback. 
-// It should accept an optional this object. 
-// It should return the index of the first element in the array that satisfies the testing function.
-// It should return -1 if no element passed the test.
-// It should run the callback on empty indexes.
+    function findIndex(array, callback, optionalThisObject) {
+        var findIndexCallback = callback;
+        if (optionalThisObject) {
+            findIndexCallback = callback.bind(optionalThisObject);
+        }
+        for (var i = 0; i < array.length; i++) {
+            callback(array[i], i, array);
 
-function findIndex(array, callback, optionalThisObject) {
-    var findIndexCallback = callback;
-    if(optionalThisObject) {
-        findIndexCallback = callback.bind(optionalThisObject);
-    }
-    for(var i = 0; i < array.length; i++) {
-        callback(array[i], i, array);
-    }
-};
+        }
+    };
 
-tests({
+    tests({
 
-'It should run the callback array.length times.': function() {
-    var counter = 0;
-    findIndex([1, 2, 3], function() {
-        counter++;
+        'It should run the callback array.length times.': function () {
+            var counter = 0;
+            findIndex([1, 2, 3], function () {
+                counter++;
+            });
+            eq(counter, 3);
+        },
+        'It should pass the in ith element as the first argument to the callback.': function () {
+            findIndex(['one'], function (number) {
+                eq(number, 'one');
+            });
+        },
+        'It should pass in ith position as the second argument to the callback.': function () {
+            findIndex([1], function (number, i) {
+                eq(i, 0);
+            });
+        },
+        'It should pass in the original array as the third argument to the callback.': function () {
+            var testArray = [1, 2, 3];
+            findIndex(testArray, function (number, i, array) {
+                eq(array, testArray);
+            });
+        },
+        'It should accept an optional this object. ': function () {
+            find([1, 2], function () {
+                eq(this.description, 'I should be accessible inside the callback')
+            }, {
+                description: 'I should be accessible inside the callback'
+            });
+
+        },
+        'It should return the index of the first element in the array that satisfies the testing function.': function () {
+            var testArray = [1, 2, 3, 4];
+            var result = findIndex(testArray, function(number, index, array) {
+                for (var i = 0; i < array.length; i++) {
+                    if (array[i] > 2) {
+                        return i;
+                    }
+                }
+                eq(result, 2);
+            });
+        },
+        'It should return -1 if no element passed the test.': function () {
+            fail();
+        },
+        'It should run the callback on empty indexes.': function () {
+            fail();
+        }
+
     });
-    eq(counter, 3);
-},
-'It should pass the in ith element as the first argument to the callback.': function() {
-    findIndex(['one'], function(number) {
-        eq(number, 'one');
-    });
-},
-'It should pass in ith position as the second argument to the callback.': function() {
-    findIndex([1], function(number, i) {
-        eq(i, 0);
-    });
-},
-'It should pass in the original array as the third argument to the callback.': function() {
-    var testArray = [1, 2, 3];
-    findIndex(testArray, function(number, i, array) {
-        eq(array, testArray);
-    });
-},
-'It should accept an optional this object. ': function() {
-    find([1, 2], function() {
-        eq(this.description, 'I should be accessible inside the callback')
-    }, {description: 'I should be accessible inside the callback'});
-    
-},
-'It should return the index of the first element in the array that satisfies the testing function.': function() {
-    fail();
-},
-'It should return -1 if no element passed the test.': function() {
-    fail();
-},
-'It should run the callback on empty indexes.': function() {
-    fail();
-}
-
-});
-
 </script>
-
