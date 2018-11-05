@@ -1,0 +1,118 @@
+<script src="../simpletest.js"></script>
+<script>
+
+    // Syntax:
+    // arr.some(callback[, thisArg])
+
+    //Requirements:
+
+    // It should run the callback array.length times if none return truthy.
+    // It should have access to the ith element as the first argument to the callback.
+    // It should have access to the ith position as the second argument to the callback.
+    // It should have access to the original array as the third argument to the callback.
+    // It should accept an optional this object.
+    // It should run the callback for each element in array until one returns truthy.
+    // It should immediately return true if a truthy element is found.
+    // It should return false if no truthy element is found.
+    // It should return false for an empty array.
+    // It should not run callback on empty indexes.
+     
+
+    // function every(array, callback, optionalThis) {
+    //     if (arguments.length === 3) {
+    //         callback = callback.bind(optionalThis);
+    //     }
+    //     for (var i = 0; i < array.length; i++) {
+    //         if (i in array) {
+    //             if (callback(array[i], i, array) === false) {
+    //                 return false;
+    //             }
+    //         }
+    //     }
+
+    //     return true;
+    // }
+    function some(array, callback, optionalThis) {
+        if(arguments.length === 3) {
+            callback = callback.bind(optionalThis);         
+        }
+        for (var i = 0; i < array.length; i++) {
+            if(i in array) {
+                if(callback(array[i], i, array) === true) {
+                    return true;
+                }
+            }          
+        }  
+        return false;    
+    }
+
+
+    tests({
+
+        'It should run the callback array.length times if none return truthy.': function () {
+            var counter = 0;
+            some([1, 2], function () {
+                counter++;
+            });
+            eq(counter, 2);
+        },
+        'It should have access to the ith element as the first argument to the callback.': function () {
+            some([1], function (number) {
+                eq(number, 1);
+            });
+        },
+        'It should have access to the ith position as the second argument to the callback.': function () {
+            some([1], function (number, index) {
+                eq(index, 0);
+            });
+        },
+        'It should have access to the array as the third argument to the callback.': function () {
+            var testArray = [1, 2];
+            some(testArray, function (number, index, array) {
+                eq(testArray, array);
+            });
+        },
+        'It should accept an optional this object.': function () {
+            some([1], function () {
+                eq(this.description, 'optional this')
+            }, {
+                description: 'optional this'
+            });
+        },
+        'It should run the callback for each element in array until one returns truthy.': function () {
+            var isTrue = some([1, 2, 3], function (num) {
+                return num === 3;
+            });
+            eq(isTrue, true);
+        },
+        'It should immediately return true if a truthy element is found.': function() {
+            var counter = 0;
+            some([1, 2, 3, 4], function(num) {
+                counter++
+                return num % 2 === 0;
+            })
+            eq(counter, 2);
+        },
+        'It should return false if no truthy element is found.': function () {
+            var isFalse = some([1, 2, 3], function (num) {
+                return num > 3;
+            });
+            eq(isFalse, false);
+        },
+        'It should return false for an empty array.': function () {
+            var isFalse = some([], function(num) {
+                return num === 3;
+            });
+            eq(isFalse, false);
+        },
+        'It should not run callback on empty indexes.': function () {
+            counter = 0;
+            some(['a', ,2, ], function(num) {
+                counter++;
+                return typeof num === 'number';
+            })
+            eq(counter, 2);
+        }
+
+    });
+</script>
