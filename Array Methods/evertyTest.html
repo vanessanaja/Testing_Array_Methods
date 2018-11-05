@@ -1,69 +1,105 @@
 <script src="../simpletest.js"></script>
 <script>
+    // Function signature:
+    // arr.every(callback(element[, index[, array]])[, thisArg])
 
-// Function signature:
-// arr.every(callback(element[, index[, array]])[, thisArg])
+    //Requirements:
 
-//Requirements:
+    // It should run the callback array.length times if none return falsy.
+    // It should pass in the ith element as the first argument to the callback.
+    // It should pass in ith position as the second argument to the callback.
+    // It should pass in the original array as the third argument to the callback.
+    // It should accept an optional this object.
+    // It should run the callback for each element in the array until it finds one that returns falsy.
+    // It should return true if all elements are returned truthy.
+    // It should return true for an empty array.
+    // It should not run callback on empty indexes. 
 
-// It should run the callback array.length times if none return falsy.
-// It should pass in the ith element as the first argument to the callback.
-// It should pass in ith position as the second argument to the callback.
-// It should pass in the original array as the third argument to the callback.
-// It should accept an optional this object.
-// It should run the callback for each element in the array until it finds one that returns falsy.
-// It should return false if an element is returned falsy.
-// It should return true if all elements are returned truthy.
-// It should not mutate the array on which it's called.
-// It should return true for an empty array.
+    // function every(array, callback, optionalThis) {
+    //     if(arguments.length === 3) {
+    //         callback = callback.bind(optionalThis);
+    //     }
+    //     for (var i = 0; i < array.length; i++) {
+    //         callback(array[i], i, array);
+    //     }
+    // }
 
-function every(array, callback) {
-    for (var i = 0; i < array.length; i++) {
-        callback(array[i]);
-    }
-}
+    function every(array, callback, optionalThis) {
+        if (arguments.length === 3) {
+            callback = callback.bind(optionalThis);
+        }
+        for (var i = 0; i < array.length; i++) {
+            if (i in array) {
+                if (callback(array[i], i, array) === false) {
+                    return false;
+                }
+            }
+        }
 
-tests({
-    'It should run the callback array.length times if none return falsy.': function() {
-        var counter = 0;
-        every([1, 2], function() {
-            counter++;
-        });
-        eq(counter, 2);
-    },
-    'It should pass in the ith element as the first argument to the callback.': function() {
-        every([1], function(number) {
-            eq(number, 1);
-        });
-    },
-    'It should pass in ith position as the second argument to the callback.': function() {
-        fail();
-    },
-    'It should pass in the original array as the third argument to the callback.': function() {
-        fail();
-    },
-    'It should accept an optional this object.': function() {
-        fail();
-    },
-    'It should run the callback for each element in the array until it finds one that returns falsy.': function() {
-        fail();
-    },
-    'It should return false if an element is returned falsy.': function() {
-        fail();
-    },
-    'It should return true if all elements are returned truthy.': function() {
-        fail();
-    },
-    'It should not mutate the array on which it\'s called.': function() {
-        fail();
-    },
-    'It should return true for an empty array.': function() {
-        fail();
+        return true;
     }
 
-});
 
 
 
+    tests({
+        'It should run the callback array.length times if none return falsy.': function () {
+            var counter = 0;
+            every([1, 2], function () {
+                counter++;
+                return 1; //added to still pass after test case 6
+            });
+            eq(counter, 2);
+        },
+        'It should pass in the ith element as the first argument to the callback.': function () {
+            every([1], function (number) {
+                eq(number, 1);
+            });
+        },
+        'It should pass in ith position as the second argument to the callback.': function () {
+            every([1], function (number, index) {
+                eq(index, 0);
+            });
+        },
+        'It should pass in the array as the third argument to the callback.': function () {
+            var testArray = [1, 2];
+            every(testArray, function (number, index, array) {
+                eq(testArray, array);
+            });
+        },
+        'It should accept an optional this object.': function () {
+            every([1], function () {
+                eq(this.description, 'optional this')
+            }, {
+                description: 'optional this'
+            });
+        },
+        'It should run the callback for each element in the array until it finds one that returns falsy.': function () {
+            var isFalse = every([1, 2, 3], function (num) {
+                return num < 3;
+            });
+            eq(isFalse, false);
+        },
+        'It should return true if all elements are returned truthy.': function () {
+            var isTrue = every([1, 2, 3], function (num) {
+                return num <= 3;
+            });
+            eq(isTrue, true);
+        },
+        'It should return true for an empty array.': function () {
+            var isTrue = every([], function(num) {
+                return num === 3;
+            });
+            eq(isTrue, true);
+        },
+        'It should not run callback on empty indexes.': function () {
+            counter = 0;
+            every([1, ,2, ,3], function(num) {
+                counter++;
+                return typeof num === 'number';
+            })
+            eq(counter, 3);
+        }
 
+    });
 </script>
