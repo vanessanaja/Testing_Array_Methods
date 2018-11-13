@@ -22,16 +22,41 @@
 //Both the original array and the new array should refer to the same object. 
 //It should copy the value of strings and booleans into the new array.
 
+function concat() {
+    numberOfArguments = arguments.length;
+    resultArray = [];
+    for (var i = 0; i < numberOfArguments; i++) {
+        var nthArgument = arguments[i];
 
+        if(nthArgument instanceof Array) {
+            for(var n = 0; n < nthArgument.length; n++) {
+                resultArray.push(nthArgument[n]);
+            }
+        } 
+        // else {
+        //     resultArray.push(nthArgument);
+        // }    
+    }
+    return resultArray;
+}
 
     tests({
-        '': function() {
-            fail();
+        'It should create a new array.': function() {
+            var array1 = [1, 2];
+            var array2 = [3, 4];
+            var newArray = concat(array1, array2);
+            eq(Array.isArray(newArray), true);  
         },
-        '': function() {
-            fail();
+        'The new array should consist of the elements in the object on which it is called.': function() {
+            var array1 = [1, 2];
+            var array2 = [3, 4];
+            concat(array1, array2);
+            eq(resultArray[0], 1); 
+            eq(resultArray[1], 2); 
+            eq(resultArray[2], 3); 
+            eq(resultArray[3], 4); 
         },
-        '': function() {
+        'The new array should also include the argument itself if the argument is not an array.': function() {
             fail();
         },
         '': function() {
