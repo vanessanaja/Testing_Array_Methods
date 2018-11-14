@@ -10,12 +10,9 @@
 
 //Requirements:
 //It should create a new array.
-//The new array should consist of the elements in the object on which it's called.
-//The new array should also include the elements of each argument if the argument is an array.
+//The new array should include the elements of each argument if the argument is an array.
 //The new array should also include the argument itself if the argument is not an array.
 //It should not recurse into nested array arguments.
-//The order of the new array should start with the elemements of the array it's called on and followed by the elements of each argument
-    //or the argument itself it it's not an array.
 //It should not alter this or any of the arrays provided as arguments. 
 //It should return a shallow copy that contains copies of the same elements combined from the original arrays.
 //Elements of the original array should be copied as object references and not as the actual object.
@@ -33,9 +30,9 @@ function concat() {
                 resultArray.push(nthArgument[n]);
             }
         } 
-        // else {
-        //     resultArray.push(nthArgument);
-        // }    
+        else {
+            resultArray.push(nthArgument);
+        }    
     }
     return resultArray;
 }
@@ -47,23 +44,27 @@ function concat() {
             var newArray = concat(array1, array2);
             eq(Array.isArray(newArray), true);  
         },
-        'The new array should consist of the elements in the object on which it is called.': function() {
+        'The new array should include the elements of each argument if the argument is an array.': function() {
             var array1 = [1, 2];
             var array2 = [3, 4];
-            concat(array1, array2);
-            eq(resultArray[0], 1); 
-            eq(resultArray[1], 2); 
-            eq(resultArray[2], 3); 
-            eq(resultArray[3], 4); 
+            var expectedOutput = [1, 2, 3, 4];
+            var result = concat(array1, array2);
+            result.forEach(function(element, i) {
+                eq(element, expectedOutput[i]);
+            });
         },
         'The new array should also include the argument itself if the argument is not an array.': function() {
-            fail();
+            var expectedOutput = [1, 2, 3];
+            var result = concat([1, 2], 3);
+            result.forEach(function(element, i) {
+                eq(element, expectedOutput[i]);
+            })
         },
-        '': function() {
-            fail();
-        },
-        '': function() {
-            fail();
+        'It should not recurse into nested array arguments.': function() {
+            var result = concat([1], [2, [3]]);
+            eq(result[0], 1);
+            eq(result[1], 2);
+            eq(result[2][0], [3]);
         },
         '': function() {
             fail();
