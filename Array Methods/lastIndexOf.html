@@ -1,0 +1,93 @@
+<script src="../simpletest.js"></script>
+<script>
+
+
+//The indexOf() method returns the first index at which a given element can be found in the array, 
+//or -1 if it is not present.
+
+//Syntax:
+//arr.lastIndexOf(searchElement[, fromIndex])
+
+// myLastIndexOf(array, searchElement[, fromIndex])
+
+//Parameters
+    //searchElement - Element to locate in array.
+    //fromIndex (optional) - The index at which you start searching backwards. 
+
+//Requirements:
+
+//It should return the last index at which a given element can be found in the array.
+//It should return -1 if the element is not present in the array.
+//It should search the array from back to front starting at array.length-1.
+//It should start searching backwards from optionl fromIndex if provided.
+//It should search the entire array if fromIndex >= array.length.
+//If the fromIndex is negative, it is offset from the end of the array.
+//It should return -1 if the calculated index is < 0. 
+//It should use strict equality to compare searchElement to elements of Array.
+
+
+function lastIndexOf(array, searchElement, fromIndex) {
+    var startingIndex = array.length - 1;
+    if(arguments.length === 3 && fromIndex > 0) {
+        startingIndex = fromIndex
+    }
+    if (arguments.length === 3 && fromIndex < 0) {
+        startingIndex = array.length - 1 + fromIndex
+        if(startingIndex < 0) {
+            return -1;
+        }
+    }
+    for(var i = startingIndex; i > 0; i--) {
+        if(searchElement === array[i]) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+tests({
+    'It should return the last index at which a given element can be found in the array.': function() {
+        var findlastIndex = lastIndexOf([1, 2, 3, 2], 2); {
+            eq(findlastIndex, 3)
+        }
+    },
+    'It should return -1 if the element is not present in the array.': function() {
+        var findIndex = lastIndexOf([1, 2, 3], 0); {
+            eq(findIndex, -1)
+        }
+    },
+    'It should search the array from back to front starting at array.length-1.': function() {
+        var findIndex = lastIndexOf([1, 2, 3, 4, 3], 3)
+        eq(findIndex , 4);
+       
+    },
+    'It should start searching backwards from optionl fromIndex if provided.': function() {
+        var findIndex = lastIndexOf([1, 2, 3, 5, 5, 3], 3, 4); {
+            eq(findIndex, 2)
+        }
+    },
+    'It should search the entire array if fromIndex >= array.length.': function() {
+        var findIndex = lastIndexOf([1, 2, 3, 4, 3], 3, 5); {
+            eq(findIndex, 4)    
+        }
+    },
+    'If the fromIndex is negative, it is offset from the end of the array.': function() {
+        var findIndex = lastIndexOf([1, 2, 3, 4, 3, 2], 3, -2); {
+            eq(findIndex, 2)    
+        }
+    },
+    'It should return -1 if the calculated index is < 0.': function() {
+        var findIndex = lastIndexOf([1, 2, 3], 2, -4); {
+            eq(findIndex, -1)    
+        }
+    },
+    'It should use strict equality to compare searchElement to elements of Array.': function() {
+        var testArray = [1, 2, 3]
+        var findIndex = lastIndexOf(testArray, 3); {
+            eq(findIndex === 2, true);    
+        }
+    }
+    
+
+});
+</script>
