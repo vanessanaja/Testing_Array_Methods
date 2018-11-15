@@ -1,0 +1,91 @@
+<script src="../simpletest.js"></script>
+<script>
+
+//The indexOf() method returns the first index at which a given element can be found in the array, 
+//or -1 if it is not present.
+
+//Syntax:
+//arr.indexOf(searchElement[, fromIndex])
+
+// myIndexOf(array, searchElement[, fromIndex])
+
+//Parameters
+    //searchElement - Element to locate in array
+    //fromIndex (optional) - The index at which you start the search
+
+//Requirements:
+
+//It should return the first index at which a given element can be found in the array.
+//It should return -1 if the element is not present in the array.
+//It should start searching from optionl fromIndex if provided.
+//It should return -1 if the fromIndex is greater than or equal to array.length and not search the array.
+//It should still search the array from front to back if the provided fromIndex is negative.
+//It should search the entire array if the provided index is 0.
+//It should default to index 0 if no fromIndex is provided.
+//It should use strict equality to compare searchElement to elements of Array.
+
+function indexOf(array, searchElement, fromIndex) {
+    var startingIndex = 0;
+    if(arguments.length === 3) {
+        startingIndex = fromIndex;
+    }
+    for(var i = startingIndex; i < array.length; i++) {
+        if(array[i] === searchElement) {
+            return i;
+        }
+        if(fromIndex > array.length) {
+            return -1;
+        }
+        if(fromIndex < 0) {
+            fromIndex = 0
+        }
+        
+    }
+    return -1;
+
+}
+
+tests({
+    'It should return the first index at which a given element can be found in the array.': function() {
+        var findIndex = indexOf([1, 2, 3], 2); {
+            eq(findIndex, 1)
+        }
+    },
+    'It should return -1 if the element is not present in the array.': function() {
+        var findIndex = indexOf([1, 2, 3], 0); {
+            eq(findIndex, -1)
+        }
+    },
+    'It should start searching from optionl fromIndex if provided.': function() {
+        var findIndex = indexOf([1, 2, 3, 4, 3], 3, 3)
+        eq(findIndex , 4);
+       
+    },
+    'It should return -1 if the fromIndex is greater than or equal to array.length and not search the array.': function() {
+        var findIndex = indexOf([1, 2, 3], 3, 4); {
+            eq(findIndex, -1)
+        }
+    },
+    'It should still search the array from front to back if the provided fromIndex is negative.': function() {
+        var findIndex = indexOf([1, 2, 3], 3, -2); {
+            eq(findIndex, 2)    
+        }
+    },
+    'It should search the entire array if the provided index is 0.': function() {
+        var findIndex = indexOf([1, 2, 3], 3, 0); {
+            eq(findIndex, 2)    
+        }
+    },
+    'It should default to index 0 if no fromIndex is provided.': function() {
+        var findIndex = indexOf([1, 2, 3], 3); {
+            eq(findIndex, 2)    
+        }
+    },
+    'It should use strict equality to compare searchElement to elements of Array.': function() {
+        var findIndex = indexOf([1, 2, 3], 3); {
+            eq(findIndex, 2)    
+        }
+    }
+
+});
+</script>
