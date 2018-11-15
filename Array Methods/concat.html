@@ -15,8 +15,6 @@
 //It should not recurse into nested array arguments.
 //It should not alter this or any of the arrays provided as arguments. 
 //It should return a shallow copy that contains copies of the same elements combined from the original arrays.
-//Elements of the original array should be copied as object references and not as the actual object.
-//Both the original array and the new array should refer to the same object. 
 //It should copy the value of strings and booleans into the new array.
 
 function concat() {
@@ -66,25 +64,28 @@ function concat() {
             eq(result[1], 2);
             eq(result[2][0], [3]);
         },
-        '': function() {
-            fail();
+        'It should not alter this or any of the arrays provided as arguments. ': function() {
+            var array1 = [1, 2, 3];
+            var array2 = [4, 5, 6];
+            concat(array1, array2);
+            eq(JSON.stringify(array1), JSON.stringify([1, 2, 3]));
+            eq(JSON.stringify(array2), JSON.stringify([4, 5, 6]));
         },
-        '': function() {
-            fail();
+        'It should return a shallow copy that contains copies of the same elements combined from the original arrays.': function() {
+            var array1 = [1, 2, 3];
+            var array2 = [[5, 6]];
+            var result = concat(array1, array2);
+            eq(result[0], array1[0]);
+            eq(result[1], array1[1]);
+            eq(result[2], array1[2]);
+            eq(result[3], array2[0]);
         },
-        '': function() {
-            fail();
-        },
-        '': function() {
-            fail();
-        },
-        '': function() {
-            fail();
-        },
-        '': function() {
-            fail();
-        }
+        'It should copy the value of strings and booleans into the new array.': function() {
+            var result = concat('string', true);
+            eq(result[0], 'string');
+            eq(result[1], true);
 
+        }
 
     });    
 </script>   
