@@ -1,0 +1,71 @@
+<script src="../simpletest.js"></script>
+<script>
+
+//The includes() method determines whether an array includes a certain element, returning true or false.
+
+//Syntax:
+//arr.includes(searchElement[, fromIndex])
+
+// myIncludes(array, searchElement[, fromIndex])
+
+//Return value: Boolean
+
+//Parameters
+    //searchElement: Element to locate in array
+    //fromIndex (optional): The index at which you start the search
+
+//Requirements:
+
+//It should return true if the given element can be found in the array.
+//It should return false if the given element can not be found in the array.
+//It should start searching from optional fromIndex if provided.
+//If the fromIndex is negative, it should be offset from the end of the array.
+//It should search the entire array if the provided index is 0.
+
+
+function includes(array, searchElement, fromIndex) {
+    var startingIndex = 0;
+    if(fromIndex > 0) {
+        startingIndex = fromIndex;
+    } 
+    if(fromIndex < 0) {
+        startingIndex = array.length + fromIndex;
+    }
+    for(var i = startingIndex; i < array.length; i++) {
+        if(array[i] === searchElement) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
+tests({
+    'It should return true if the given element can be found in the array.': function() {
+        var result = includes(['cat', 'dog', 'horse'], 'dog')
+            eq(result, true);
+        },
+    'It should return false if the given element can not be found in the array.': function() {
+        var result = includes(['cat', 'dog', 'horse'], 'bird')
+            eq(result, false);
+    },
+    'It should start searching from optional fromIndex if provided.': function() {
+        var result = includes([1, 2, 3, 4], 1, 2)
+        eq(result , false);
+        // eq(result , 3);
+       
+    },
+    'If the fromIndex is negative, it should be offset from the end of the array.': function() {
+        var result = includes([1, 2, 3], 1, -2); {
+            eq(result , false);
+        }
+    },
+    'It should search the entire array if the provided index is 0.': function() {
+        var result = includes([1, 2, 3], 1, 0); {
+            eq(result, true)    
+        }
+    },
+
+
+});
+</script>
