@@ -1,0 +1,80 @@
+<script src="../simpletest.js"></script>
+<script>
+    //The join() mmethod method creates and returns a new string by concatenating all of the elements in an array 
+    //(or an array-like object), separated by commas or a specified separator string.
+
+    //Syntax:
+    //arr.join([separator]);
+
+    // myjoin(array, [separator]);
+
+    //Return value: A string with all array elements joined. If arr.length is 0, the empty string is returned. 
+
+    //Parameters
+    //separator: Specifies a string to separate each pair of adjacent elements of the array. 
+
+    //Requirements:
+
+    //It should create and return new string
+    //It should concatenate all of the elements in an array.
+    //If separator is used, it should seperate the elements in the new string by the separator.
+    //If no separator is used, it should separate the elements in the new string by commas.
+    //If separator is an empty string, it should join all elements with no characters between them.
+    //It should be converted to the empty string if an element is undefined or null, 
+    //It should return an empty string if array.length is 0.
+
+
+    // function slice(array, begin, end) {
+    //     var startIndex = 0;
+    //     var slicedArray = [];
+    //     var endIndex = array.length;
+    //     if (begin > 0) {
+    //         startIndex = begin;
+    //     }
+    //     if (begin < 0) {
+    //         startIndex = array.length - begin;
+    //     }
+    //     if(begin > array.length) {
+    //         slicedArray = [];
+    //     }
+    //     if(end > 0) {
+    //         endIndex = end;
+    //     }
+    //     if(end < 0) {
+    //         endIndex = array.length + end;
+    //     }
+    //     if(end > array.length) {
+    //         endIndex = end;
+    //     }
+    //     for (var i = startIndex; i < end; i++) {
+    //         slicedArray.push(array[i]);
+    //     }
+    //     return slicedArray;
+    // }
+
+
+    tests({
+        '': function() {
+            fail();
+        },
+        '': function() {
+            fail();
+        },
+        '': function() {
+            fail();
+        },
+        '': function() {
+            fail();
+        },
+        '': function() {
+            fail();
+        },
+        '': function() {
+            fail();
+        },
+        '': function() {
+            fail();
+        }
+
+    });
+</script>
