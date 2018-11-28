@@ -15,64 +15,44 @@
 
     //Requirements:
 
-    //It should create and return new string
+    //It should create and return new string.
     //It should concatenate all of the elements in an array.
     //If separator is used, it should seperate the elements in the new string by the separator.
     //If no separator is used, it should separate the elements in the new string by commas.
     //If separator is an empty string, it should join all elements with no characters between them.
-    //It should be converted to the empty string if an element is undefined or null, 
+    //It should be converted to the empty string if an element is undefined or null. 
     //It should return an empty string if array.length is 0.
 
+    //notes
+    //if array only has 1 element, only that elemeent goes in the string
+    //if array has more than 1 element, separator goes after each element except for last
+    // i.e. array[0] + separator + array[1] + separator + array[2]
 
-    // function slice(array, begin, end) {
-    //     var startIndex = 0;
-    //     var slicedArray = [];
-    //     var endIndex = array.length;
-    //     if (begin > 0) {
-    //         startIndex = begin;
-    //     }
-    //     if (begin < 0) {
-    //         startIndex = array.length - begin;
-    //     }
-    //     if(begin > array.length) {
-    //         slicedArray = [];
-    //     }
-    //     if(end > 0) {
-    //         endIndex = end;
-    //     }
-    //     if(end < 0) {
-    //         endIndex = array.length + end;
-    //     }
-    //     if(end > array.length) {
-    //         endIndex = end;
-    //     }
-    //     for (var i = startIndex; i < end; i++) {
-    //         slicedArray.push(array[i]);
-    //     }
-    //     return slicedArray;
-    // }
+
+
 
 
     tests({
-        '': function() {
+        'It should create and return new string.': function () {
+            let result = join([1, 2, 3])
+       
+        },
+        'It should concatenate all of the elements in an array.': function () {
+        
+        },
+        'If separator is used, it should seperate the elements in the new string by the separator.': function () {
+       
+        },
+        'If no separator is used, it should separate the elements in the new string by commas.': function () {
+          
+        },
+        'If separator is an empty string, it should join all elements with no characters between them.': function () {
+        
+        },
+        'It should be converted to the empty string if an element is undefined or null. ': function () {
             fail();
         },
-        '': function() {
-            fail();
-        },
-        '': function() {
-            fail();
-        },
-        '': function() {
-            fail();
-        },
-        '': function() {
-            fail();
-        },
-        '': function() {
-            fail();
-        },
-        '': function() {
+        'It should return an empty string if array.length is 0.': function () {
             fail();
         }
 
